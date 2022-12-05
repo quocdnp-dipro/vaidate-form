@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField, RadioField } from "./input/InputField";
 
-type Profile = {
+interface Profile {
     name: string;
     age: number;
     description: string;
@@ -24,16 +24,18 @@ function App() {
     });
     const {
         control,
+        reset,
         watch,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isDirty },
     } = useForm<Profile>({
         mode: "onBlur",
         resolver: yupResolver(schema),
     });
-    const w = watch();
+
     const unload = () => {
-        if (w.name !== undefined || w.age !== undefined || w.description !== undefined || w.gender !== undefined || w.website !== undefined) {
+        const w = watch();
+        if (isDirty) {
             return true
         }
         return false;
@@ -44,8 +46,15 @@ function App() {
         if (data) {
             console.log(`Name : ${data.name} Age : ${data.age} Link Facebook : ${data.website} Description : ${data.description} Gender : ${data.gender}`)
         }
+        reset({
+            name: '',
+            age: 0,
+            description: '',
+            website: '',
+            gender: ''
+        })
     };
-    console.log(useForm())
+
 
     return (
         <div className="flex justify-center items-center w-screen h-screen">
