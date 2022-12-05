@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Button } from "reactstrap";
 import { useForm } from "react-hook-form";
@@ -24,24 +24,34 @@ function App() {
     });
     const {
         control,
+        watch,
         handleSubmit,
         formState: { errors },
     } = useForm<Profile>({
         mode: "onBlur",
         resolver: yupResolver(schema),
     });
+    const w = watch();
+    const unload = () => {
+        if (w.name !== undefined || w.age !== undefined || w.description !== undefined || w.gender !== undefined || w.website !== undefined) {
+            return true
+        }
+        return false;
+    }
+    window.addEventListener("beforeunload", (e) => unload() ? e.returnValue = 'unload page' : 0);
 
     const onSubmit = (data: Profile) => {
         if (data) {
             console.log(`Name : ${data.name} Age : ${data.age} Link Facebook : ${data.website} Description : ${data.description} Gender : ${data.gender}`)
         }
     };
+    console.log(useForm())
 
     return (
         <div className="flex justify-center items-center w-screen h-screen">
             <Form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col w-1/3 border-[0.4px] py-14 px-8 shadow-lg shadow-indigo-500/40"
+                className="flex flex-col border-[0.4px] py-14 px-8 shadow-lg shadow-indigo-500/40 sm:w-96 w-screen"
             >
                 <h3 className="text-center">FORM</h3>
                 <InputField
