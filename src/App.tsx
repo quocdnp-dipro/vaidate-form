@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, Button } from "reactstrap";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
+// import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField, RadioField } from "./input/InputField";
+import yup from './common/customYup'
 
 interface Profile {
     name: string;
@@ -16,16 +16,15 @@ interface Profile {
 
 function App() {
     const schema = yup.object().shape({
-        name: yup.string().required(),
+        name: yup.string().nonSpace(),
         age: yup.number().required().min(16).max(50).integer(),
         website: yup.string().notRequired().url(),
-        description: yup.string().required(),
+        description: yup.string().nonSpace(),
         gender: yup.string().required(),
     });
     const {
         control,
         reset,
-        watch,
         handleSubmit,
         formState: { errors, isDirty },
     } = useForm<Profile>({
@@ -34,7 +33,6 @@ function App() {
     });
 
     const unload = () => {
-        const w = watch();
         if (isDirty) {
             return true
         }
@@ -60,9 +58,9 @@ function App() {
         <div className="flex justify-center items-center w-screen h-screen">
             <Form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col border-[0.4px] py-14 px-8 shadow-lg shadow-indigo-500/40 sm:w-96 w-screen"
+                className="flex flex-col border-[0.4px] py-9 px-8 shadow-lg shadow-indigo-500/40 sm:w-96 w-screen"
             >
-                <h3 className="text-center">FORM</h3>
+                <h3 className="text-center pb-4">VALIDATE FORM</h3>
                 <InputField
                     placeholder="User Name"
                     control={control}
