@@ -16,5 +16,4 @@ declare module "yup" {
         nonSpace(): StringSchema<TType, TContext>;
     }
 }
-
 export default yup;
