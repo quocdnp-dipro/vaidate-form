@@ -1,14 +1,6 @@
 import * as yup from "yup";
 import { AnyObject, Maybe } from "yup/lib/types";
 
-// yup.addMethod(yup.string, "nonSpace", function (errorMessage) {
-//     return this.test(errorMessage, function (value: any) {
-//         const { createError } = this;
-
-//         return /^[\s]/.test(originalValue)  || createError({ message: errorMessage });
-//     });
-// });
-
 yup.addMethod(yup.string, "nonSpace", function nonSpace() {
     return this.transform((value: string, originalValue: string) =>
         /^\s/.test(originalValue) ? value.trim() : value
